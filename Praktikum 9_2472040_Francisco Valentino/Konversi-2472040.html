@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konversi - 2472040</title>
+  <style>
+    body {
+      background-color: antiquewhite;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+    h2 {
+      color: #333;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      color: #555;
+      text-align: center;
+    }
+    input, select, button {
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    input[type="number"] {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    select, button.convert {
+      width: 100%;
+    }
+    button.switch {
+      background-color: #2575fc;
+      color: white;
+      border: none;
+      margin: 15px auto 0;
+      display: block;
+      width: 60%;
+    }
+    button.convert {
+      background-color: #2575fc;
+      color: white;
+      border: none;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .result {
+      text-align: center;
+      margin-top: 20px;
+      color: #2575fc;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Konverter Mata Uang</h2>
+    <label>Jumlah Uang</label>
+    <input type="number" id="amount" value="1">
+
+    <label>Dari Mata Uang</label>
+    <select id="from">
+      <option value="USD">USD - Dollar Amerika</option>
+      <option value="IDR">IDR - Rupiah Indonesia</option>
+      <option value="EUR">EUR - Euro</option>
+      <option value="JPY">JPY - Yen Jepang</option>
+      <option value="GBP">GBP - Pound Inggris</option>
+      <option value="SGD">SGD - Dollar Singapura</option>
+      <option value="AUD">AUD - Dollar Australia</option>
+    </select>
+
+    <button class="switch" onclick="swapCurrencies()">⇆ Tukar Mata Uang</button>
+
+    <label>Ke Mata Uang</label>
+    <select id="to">
+      <option value="IDR">IDR - Rupiah Indonesia</option>
+      <option value="USD">USD - Dollar Amerika</option>
+      <option value="EUR">EUR - Euro</option>
+      <option value="JPY">JPY - Yen Jepang</option>
+      <option value="GBP">GBP - Pound Inggris</option>
+      <option value="SGD">SGD - Dollar Singapura</option>
+      <option value="AUD">AUD - Dollar Australia</option>
+    </select>
+
+    <button class="convert" onclick="convertCurrency()">Konversi</button>
+
+    <div class="result" id="result">1 USD = 16.500,00 IDR</div>
+  </div>
+
+  <script>
+    const rates = {
+      USD: 16500,
+      IDR: 1,
+      EUR: 18500,
+      JPY: 165,
+      GBP: 22000,
+      SGD: 12750,
+      AUD: 10500
+    };
+
+    function swapCurrencies() {
+      const from = document.getElementById('from');
+      const to = document.getElementById('to');
+      [from.value, to.value] = [to.value, from.value];
+    }
+
+    function convertCurrency() {
+      const amount = parseFloat(document.getElementById('amount').value);
+      const from = document.getElementById('from').value;
+      const to = document.getElementById('to').value;
+
+      const result = (amount * rates[from]) / rates[to];
+
+      document.getElementById('result').innerText = `${amount} ${from} = ${result.toLocaleString('id-ID', {minimumFractionDigits: 2, maximumFractionDigits: 2})} ${to}`;
+    }
+  </script>
+</body>
+</html>

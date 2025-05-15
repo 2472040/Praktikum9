@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hangman - 2472040</title>
+  <style>
+    body {
+      background-color: lightblue;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .image-container {
+      text-align: center;
+    }
+
+    .image-container img {
+      width: 200px;
+      height: auto;
+    }
+
+    .content {
+      text-align: center;
+      max-width: 500px;
+    }
+
+    #answer-display {
+      font-size: 28px;
+      letter-spacing: 15px;
+      white-space: nowrap;
+      margin-bottom: 15px;
+    }
+
+    #clue {
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    input[type="text"] {
+      width: 40px;
+      text-align: center;
+      font-size: 18px;
+      margin-right: 5px;
+    }
+
+    #result {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 20px;
+      color: green;
+    }
+
+    #result.lose {
+      color: red;
+    }
+
+    button {
+      font-size: 16px;
+      padding: 4px 10px;
+    }
+
+    #lives {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body onload="generate()">
+
+<div class="container">
+  <div class="image-container">
+    <img id="hangman-img" src="img/10.jpg" alt="Hangman">
+    <div id="lives">Lives: 10</div>
+  </div>
+
+  <div class="content">
+    <div id="answer-display">_ _ _ _ _</div>
+    <div id="clue"></div>
+    <input type="text" id="letter" maxlength="1">
+    <button onclick="checkAnswer()">Check</button>
+    <div id="result"></div>
+  </div>
+</div>
+
+<script>
+  let answers = ["PYTHON", "JAVASCRIPT", "TAILWIND", "REACT", "LARAVEL"];
+  let clues = [
+    "A versatile programming language named after a snake, loved for its simplicity.",
+    "The language that brings interactivity to websites, often abbreviated as JS.",
+    "A utility-first CSS framework for rapidly building custom designs.",
+    "A JavaScript library for building dynamic user interfaces, created by Facebook.",
+    "A PHP framework known for elegant syntax and robust web development tools."
+  ];
+
+  var answer = "";
+  var answer_ = "";
+  var lives = 10;
+
+  function generate() {
+    let i = Math.floor(Math.random() * answers.length);
+    answer = answers[i];
+    answer_ = "_".repeat(answer.length);
+    lives = 10;
+    document.getElementById("answer-display").textContent = answer_.split('').join(' ');
+    document.getElementById("clue").textContent = clues[i];
+    document.getElementById("lives").textContent = "Lives: " + lives;
+    document.getElementById("hangman-img").src = "img/" + lives + ".jpg";
+    document.getElementById("result").textContent = "";
+    document.getElementById("result").classList.remove("lose");
+    document.getElementById("letter").style.display = "inline-block";
+    document.querySelector("button").style.display = "inline-block";
+  }
+
+  function checkAnswer() {
+    let letter = document.getElementById("letter").value.toUpperCase();
+    document.getElementById("letter").value = "";
+
+    if (!letter || letter.length !== 1) return;
+
+    if (answer.includes(letter)) {
+      let newAnswer = "";
+      for (let i = 0; i < answer.length; i++) {
+        newAnswer += (answer[i] === letter) ? letter : answer_[i];
+      }
+      answer_ = newAnswer;
+    } else {
+      lives--;
+    }
+
+    document.getElementById("answer-display").textContent = answer_.split('').join(' ');
+    document.getElementById("lives").textContent = "Lives: " + lives;
+    document.getElementById("hangman-img").src = "img/" + lives + ".jpg";
+    checkWin();
+  }
+
+  function checkWin() {
+    if (!answer_.includes("_")) {
+      document.getElementById("result").textContent = "Kamu Menang!";
+      document.getElementById("result").classList.remove("lose");
+      document.getElementById("letter").style.display = "none";
+      document.querySelector("button").style.display = "none";
+    } else if (lives === 0) {
+      document.getElementById("result").textContent = "Kamu Kalah!";
+      document.getElementById("result").classList.add("lose");
+      document.getElementById("answer-display").textContent = answer.split('').join(' ');
+      document.getElementById("letter").style.display = "none";
+      document.querySelector("button").style.display = "none";
+    }
+  }
+</script>
+
+</body>
+</html>
